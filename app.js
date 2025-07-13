@@ -1,5 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
+const serverless = require("serverless-http");
 
 import {PORT} from './config/env.js'
 
@@ -36,4 +37,4 @@ app.listen(PORT, async () => {
     await connectToDatabase();
 })
 
-export default app;
+module.exports.handler = serverless(app);
