@@ -1,6 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-const serverless = require("serverless-http");
+import serverless from 'serverless-http';
 
 import {PORT} from './config/env.js'
 
@@ -31,10 +31,13 @@ app.get('/', (req, res) => {
     res.send("hello");
 }) 
 
-app.listen(PORT, async () => {
+// Only start the server locally
+if (!process.env.VERCEL) {
+  app.listen(PORT, async () => {
     console.log(PORT);
-
     await connectToDatabase();
-})
+  });
+}
 
-module.exports.handler = serverless(app);
+// Always export the handler for Vercel
+export const handler = serverless(app);
